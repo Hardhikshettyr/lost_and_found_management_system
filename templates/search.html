@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Lost Items</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Search Lost Items</h1>
+        <form method="POST">
+            <label for="item_name">Item Name:</label>
+            <input type="text" id="item_name" name="item_name" required>
+            <button type="submit">Search</button>
+        </form>
+        {% if found_items %}
+            <h2>Found Items</h2>
+            <ul>
+                {% for item in found_items %}
+                    <li>
+                        <strong>Item Name:</strong> {{ item['item_name'] }}<br>
+                        <strong>Found Date:</strong> {{ item['found_date'] }}<br>
+                        <strong>Found Place:</strong> {{ item['found_place'] }}<br>
+                        <form method="POST" action="{{ url_for('verify_quiz', found_id=item['found_id']) }}">
+                            <label for="answer1">{{ item['quiz1_question'] }}</label>
+                            <input type="text" id="answer1" name="answer1" required><br>
+                            <label for="answer2">{{ item['quiz2_question'] }}</label>
+                            <input type="text" id="answer2" name="answer2" required><br>
+                            <button type="submit">Verify Answers</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <a href="{{ url_for('index') }}">Back to Home</a>
+    </div>
+</body>
+</html>
